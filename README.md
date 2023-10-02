@@ -276,7 +276,22 @@ jekyll serve
 
 # 231001
 ## 목차
+
+- main branch protection
+
+## main branch protection
+
+<img width="928" alt="스크린샷 2023-10-01 오전 2 34 06" src="https://user-images.githubusercontent.com/138586629/271787239-e7c9e0a6-0e7d-442e-bb83-7cf7beda65b1.png">
+
+이런 경고가 뜨길래 아 그러고보니 main에 바로 push 못하게 막고 
+지금처럼 PR(Pull Request)로만 merge 가능하게 설정해놔야겠다 싶었다. 
+
+<img width="1172" alt="스크린샷 2023-10-01 오전 2 32 36" src="https://user-images.githubusercontent.com/138586629/271787170-4e81a37b-07b4-476f-bb9d-53eb83935123.png">
+
+기본 권장인 위 `Require a pull request before merging` 옵션만 주고 저장. 이제 조금은 안전해졌달까! 
+
 ## 학습메모
+
 
 
 ---
