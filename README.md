@@ -308,7 +308,7 @@ jekyll serve
 - 7. assets : css, js, image 로드
 - 8. blogging : _posts 경로로 .md 파일 렌더
 - 9. collections : 
-- 10. deployment : 
+- 10. deployment : jekyll 빌드해서 배포
 
 ## jekyll serve 오류 해결
 
@@ -555,8 +555,126 @@ https://user-images.githubusercontent.com/138586629/272024094-f3ba2a85-107c-4480
 얼마나 멋있냐 이말씀이야~
 
 ## 9. collections : 
-## 10. deployment : 
 
+
+## 10. deployment : jekyll 빌드해서 배포
+
+여태까지 만든 것들을 복습하자면, 기본적인 Jekyll 사이트는 다음과 같은 디렉터리 구조임.
+
+<img width="704" alt="스크린샷 2023-10-03 오전 1 22 06" src="https://user-images.githubusercontent.com/138586629/272027611-0ff55c78-3867-48c6-8bb5-d714e195ee3c.png">
+
+### Gemfile
+
+이미 한 내용이지만, 복습 차원에서 다시 보자면, Gemfile은 종속성을 위한 파일이다. 
+js의 package.json, python의 requirements.txt!
+
+```bash
+bundle init
+bundle add jekyll
+```
+
+요거 하면 이런 Gemfile이 나옴
+
+```gemfile
+# Gemfile
+# frozen_string_literal: true
+source "https://rubygems.org"
+
+gem "jekyll"
+```
+
+- `bundle install` 또는 `bundle` : 의존성대로 설치해서 Gemfile.lock이 나옴
+- `bundle update` : 설치됨 gem들의 버전 업데이트
+
+Gemfile이 있으면, `jekyll serve`같은 명령 앞에 prefix `bundle exec`를 자동으로 붙여줌. 
+이때까지 쓰던 jekyll serve는 사실 `bundle exec jekyll serve`였던거임. 헉! 
+
+### Plugins
+
+jekyll 플러그인들이 있는데, 대표적인 3개를 사용해보자.
+
+- `jekyll-sitemap` : 검색 엔진을 위한 사이트맵 만들어줌
+- `jekyll-feed` : RSS feed 만들어줌
+- `jekyll-seo-tag` : SEO를 위한 메타태그 붙여 줌
+
+Gemfile에 요렇게 추가해주면 설치할 수 있단다.
+
+```gemfile
+# Gemfile
+# frozen_string_literal: true
+
+source "https://rubygems.org"
+
+gem "jekyll"
+
+group :jekyll_plugins do
+    gem 'jekyll-sitemap'
+    gem 'jekyll-feed'
+    gem 'jekyll-seo-tag'
+  end
+```
+
+그다음 `_config.yml`에 이거 추가
+
+```yml
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
+  - jekyll-seo-tag
+```
+
+그다음 터미널에 bundle update!
+
+```bash
+sudo bundle update
+```
+
+![스크린샷 2023-10-03 오전 1 35 43](https://user-images.githubusercontent.com/138586629/272030593-f7f6197d-e205-4755-b3c5-2ffee15dcd82.png)
+
+좋고요, feed랑 seo-tag 넣는 건 `_layouts/default.html`에 요렇게 두줄 추가해주면 된단다
+
+```html
+<!-- _layouts/default.html -->
+<head>
+    ...
+    {% feed_meta %}
+    {% seo %}
+</head>
+```
+
+<img width="1430" alt="스크린샷 2023-10-03 오전 1 39 10" src="https://user-images.githubusercontent.com/138586629/272031494-1aeedf4c-a121-49b5-b5c8-870ad542693d.png">
+
+head태그 안에 피드 경로랑 SEO tag 추가된거 보이시죠?
+
+<img width="1500" alt="스크린샷 2023-10-03 오전 1 40 14" src="https://user-images.githubusercontent.com/138586629/272031704-49e784c6-46c6-470f-aa4d-44fd8539a17c.png">
+
+RSS Feed는 요건가 봅니다~ 굳굳
+
+### Environments & Deployment
+
+이건 배포 단계에서 production으로 build하는 방법을 보여주는 건데요, 터미널에
+
+```bash
+JEKYLL_ENV=production bundle exec jekyll build
+```
+
+이러면 된답니다. 결국 `bundle exec jekyll build` 하는데 환경변수를 default인 `development`가 아닌 
+`production`으로 한단거겠죠 뭐 별거아님. 
+
+![스크린샷 2023-10-03 오전 1 45 25](https://user-images.githubusercontent.com/138586629/272032871-af7c5d13-79cf-44a2-9121-45afce6e3a1d.png)
+
+진짜 별거아님 이제 걍 `_site/` 통째로 프론트서버 올려라 이거임.
+
+![스크린샷 2023-10-03 오전 1 47 23](https://user-images.githubusercontent.com/138586629/272033317-2701a9de-be84-4b9d-a10d-dd0963247ea5.png)
+
+이렇게 이것저것 필요한거 잘 있는거죠 뭐. 이 production 단계에서만 무언가 스크립트를 실행하고 싶다? 
+뭐 예를 들어 조회수 분석이라던가? 그러면 이렇게 조건문을 달 수도 있다네요 
+
+```html
+{% if jekyll.environment == "production" %}
+  <script src="my-analytics-script.js"></script>
+{% endif %}
+```
 
 
 ## 학습메모
