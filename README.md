@@ -303,6 +303,7 @@ jekyll serve
 ## 목차
 
 - jekyll serve 오류 해결
+- 1. setup, 2. liquid, 3. front matter : jekyll 기초
 - 4. layouts : _layout 경로에 .md/.html을 렌더하기 위한 레이아웃 생성
 - 5. includes : navigation 추가하기
 - 6. data files : _data 경로의 데이터 로딩하여 페이지 구성하기
@@ -339,6 +340,68 @@ sudo bundle update
 ```
 
 <img width="570" alt="스크린샷 2023-10-02 오후 4 17 48" src="https://user-images.githubusercontent.com/138586629/271905581-7727f401-a705-4c17-a48f-e593486937e7.png">
+
+## 1. setup, 2. liquid, 3. front matter : jekyll 기초
+
+jekyll tutorial step 1, 2, 3은 정말 기본적인 내용이므로 쭉 따라해보시면 되겠다! 
+
+### 1. setup
+
+```bash
+gem install jekyll bundler
+bundle init
+bundle add jekyll
+bundle
+```
+
+프로젝트 폴더에 jekyll이랑 bundler 설치하고, bundle init으로 gemfile 만들고, 
+bundle add jekyll로 jekyll 의존성 추가해서 bundle로 jekyll (프로젝트에) 설치한단 뜻. 
+
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Home</title>
+  </head>
+  <body>
+    <h1>Hello World!</h1>
+  </body>
+</html>
+```
+
+웰컴 페이지 만들고 `jekyll serve`로 돌리면 `http://localhost:4000`로 접근가능한 웹서버 열린다.
+
+- `jekyll build` : 빌드하여 _site 경로에 배포파일 떨궈줌
+- `jekyll serve` : `jekyll build` 수행 후 `http://localhost:4000`에 로컬웹서버 구동!
+
+### 2. liquid
+
+liquid는 templating language로, 자바스프링의 thymeleaf, express의 ejs같은 템플릿 엔진 생각하면 됨. 
+
+- object : 변수 출력. {{ page.title }} 하면 page.title 변수 내용으로 변환됨.
+- tags : if/endif, for 같은 흐름제어문 사용 가능 {% if ~~ %} ㅇㅇ {% endif %} 하면 조건부로 ㅇㅇ.
+- filters : [liquid filters](https://jekyllrb.com/docs/liquid/filters/)로 변환된 아웃풋을 반환함. | 구분자 사용해서 {{ "hi" | capitalize }} 하면 HI.
+
+### 3. front matter
+
+파일 최상단에 YAML로 값을 등록해놓으면, 내외부에서 접근할 수 있는 변수가 됨. 
+
+```yaml
+---
+my_number: 5
+---
+```
+
+이러면 
+
+```html
+{{ page.my_number }}
+```
+
+요런식으로 접근 가능하단 말씀. 앞으로 계속 활용할 예정. 
+
+---
 
 ## 4. layouts : _layout 경로에 .md/.html을 렌더하기 위한 레이아웃 생성
 
@@ -605,6 +668,7 @@ https://user-images.githubusercontent.com/138586629/272024094-f3ba2a85-107c-4480
 
 ## 9. collections : series별, category별로 별도 페이지 만들기
 
+튜토리얼엔 
 
 ## 10. deployment : jekyll 빌드해서 배포
 
@@ -731,6 +795,7 @@ JEKYLL_ENV=production bundle exec jekyll build
 1. [bundle update로 오류 해결](https://haereeroo.tistory.com/12)
 2. [liquid template language, if/else문](https://shopify.github.io/liquid/tags/control-flow/)
 3. [jekyll step by step, 8. blogging](https://jekyllrb.com/docs/step-by-step/08-blogging/)
+4. [liquid filters](https://jekyllrb.com/docs/liquid/filters/)
 
 ---
 ---
