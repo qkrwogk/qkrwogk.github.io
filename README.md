@@ -303,11 +303,12 @@ jekyll serve
 ## 목차
 
 - jekyll serve 오류 해결
+- 4. layouts : _layout 경로에 .md/.html을 렌더하기 위한 레이아웃 생성
 - 5. includes : navigation 추가하기
 - 6. data files : _data 경로의 데이터 로딩하여 페이지 구성하기
 - 7. assets : css, js, image 로드
 - 8. blogging : _posts 경로로 .md 파일 렌더
-- 9. collections : 
+- 9. collections : series별, category별로 별도 페이지 만들기
 - 10. deployment : jekyll 빌드해서 배포
 
 ## jekyll serve 오류 해결
@@ -338,6 +339,54 @@ sudo bundle update
 ```
 
 <img width="570" alt="스크린샷 2023-10-02 오후 4 17 48" src="https://user-images.githubusercontent.com/138586629/271905581-7727f401-a705-4c17-a48f-e593486937e7.png">
+
+## 4. layouts : _layout 경로에 .md/.html을 렌더하기 위한 레이아웃 생성
+
+```html
+<!-- _layouts/default.html -->
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>{{ page.title }}</title>
+  </head>
+  <body>
+    {{ content }}
+  </body>
+</html>
+```
+
+`_layouts/default.html`에 위와 같이 파일을 추가해주면, 이제 front matter를 통해 
+.md이나 .html 파일 렌더 시 자동으로 저렇게 템플레이팅을 해주는거다 이말씀. 
+
+```html
+---
+layout: default
+title: Home
+---
+<h1>{{ "Hello World!" | downcase }}</h1>
+```
+
+html이면 이런식으로
+
+```md
+---
+layout: default
+title: About
+---
+# About page
+
+This page tells you a little bit about me.
+```
+
+마크다운이면 이런식으로! 
+
+<img width="848" alt="스크린샷 2023-10-03 오전 2 00 19" src="https://user-images.githubusercontent.com/138586629/272036130-c3bc6a65-8e56-4dda-aa03-dc8ce13b1cda.png">
+
+
+<img width="356" alt="스크린샷 2023-10-03 오전 1 59 13" src="https://user-images.githubusercontent.com/138586629/272035857-066c25d0-4b38-4cfa-8385-6f751bd8d287.png">
+
+그러면 이렇게 잘 보인다.
 
 
 ## 5. includes : navigation 추가하기
@@ -554,7 +603,7 @@ https://user-images.githubusercontent.com/138586629/272024094-f3ba2a85-107c-4480
 
 얼마나 멋있냐 이말씀이야~
 
-## 9. collections : 
+## 9. collections : series별, category별로 별도 페이지 만들기
 
 
 ## 10. deployment : jekyll 빌드해서 배포
