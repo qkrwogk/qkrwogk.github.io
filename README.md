@@ -306,7 +306,7 @@ jekyll serve
 - 5. includes : navigation 추가하기
 - 6. data files : _data 경로의 데이터 로딩하여 페이지 구성하기
 - 7. assets : css, js, image 로드
-- 8. blogging : 
+- 8. blogging : _posts 경로로 .md 파일 렌더
 - 9. collections : 
 - 10. deployment : 
 
@@ -479,13 +479,91 @@ https://user-images.githubusercontent.com/138586629/271926510-73e91e91-28d5-4733
 
 잘되고~
 
-## 
+## 8. blogging : _posts 경로로 .md 파일 렌더
+
+_posts 폴더 내에 .md 파일을 추가하면 블로그 포스트를 렌더하고 접근할 수 있다.
+
+<img width="394" alt="스크린샷 2023-10-02 오후 6 01 18" src="https://user-images.githubusercontent.com/138586629/271927729-5dc045ca-2bc1-4663-875e-971eb2f5b911.png">
+
+한글 테스트 겸 위와 같은 .md파일을 활용해보았다. <br /><br />
+
+`YYYY-MM-DD-포스트 제목.md`형식이면 `page.date`, `page.title` 이런식으로 날짜와 제목에 접근할 수 있고, 
+layout: post외에 `author: qkrwogk` 같은 항목은 커스텀으로 추가해서 `page.author`와 같이 접근할 수 있다. 
+내용은 `content`. 간편하군! 
+
+```html
+<!-- _layouts/post.html -->
+---
+layout: default
+---
+<h1>{{ page.title }}</h1>
+<p>{{ page.date | date_to_string }} - {{ page.author }}</p>
+
+{{ content }}
+```
+
+layout: post에 대응하는 포스트 레이아웃을 만들어준다. 
+위에서 말한 속성들을 모두 활용하여 접근해준다. 
+(`date_to_string` 필터는 날짜를 예쁘게 표시해준대~)
+
+---
+
+이제 포스트를 리스트업해주는 코드를 작성! root에 blog.html을 작성해보자.
+
+```html
+<!-- /blog.html -->
+---
+layout: default
+title: Blog
+---
+<h1>Latest Posts</h1>
+
+<ul>
+  {% for post in site.posts %}
+    <li>
+      <h2><a href="{{ post.url }}">{{ post.title }}</a></h2>
+      {{ post.excerpt }}
+    </li>
+  {% endfor %}
+</ul>
+```
+
+- post.url : jekyll에 의해 자동으로 post의 경로를 얻을 수 있음
+- post.title : post의 파일명으로부터 타이틀을 파싱해옴
+- post.excerpt : content의 첫 번째 문단을 가져옴
+
+`_data/navigation.yml`에도 Blog 탭을 추가하자고?
+
+```yml
+# _data/navigation.yml
+- name: Home
+  link: /
+- name: About
+  link: /about.html
+- name: Blog
+  link: /blog.html
+```
+
+그리고~ 여러 포스트가 잘 리스트업 되는지 확인하기 위해 md파일 몇개를 더 추가해보자. 학습메모 3에서 가져옴
+
+![스크린샷 2023-10-03 오전 1 04 34](https://user-images.githubusercontent.com/138586629/272023658-bdce73c8-d84a-4fe2-8697-edf21978dfa2.png)
+
+`jekyll serve`! 두구두구
+
+https://user-images.githubusercontent.com/138586629/272024094-f3ba2a85-107c-4480-b0f5-15bb878017ed.mov
+
+얼마나 멋있냐 이말씀이야~
+
+## 9. collections : 
+## 10. deployment : 
+
+
 
 ## 학습메모
 
 1. [bundle update로 오류 해결](https://haereeroo.tistory.com/12)
 2. [liquid template language, if/else문](https://shopify.github.io/liquid/tags/control-flow/)
-
+3. [jekyll step by step, 8. blogging](https://jekyllrb.com/docs/step-by-step/08-blogging/)
 
 ---
 ---
