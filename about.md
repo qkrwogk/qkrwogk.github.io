@@ -3,7 +3,9 @@ layout: default
 title: About
 ---
 
-# About me
+# About page
+
+This page tells you a little bit about me.
 
 화이트해커 출신 개발자 박재하 입니다.
 
