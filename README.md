@@ -668,7 +668,86 @@ https://user-images.githubusercontent.com/138586629/272024094-f3ba2a85-107c-4480
 
 ## 9. collections : series별, category별로 별도 페이지 만들기
 
-튜토리얼엔 
+튜토리얼엔 author로 분류하지만, 보통 만드는 개인 블로그에선 카테고리나 시리즈별로 분류하니까 그렇게 하겠음.
+
+### 번외 (의외의 발견)
+
+```md
+---
+layout: post
+author: jill
+series: 색 시리즈
+category: 빨간색
+---
+REDREDRED
+```
+
+```md
+---
+layout: post
+author: jill
+series: 과일시리즈
+category: 빨간색
+---
+An apple is a sweet, edible fruit produced by an apple tree.
+```
+
+```md
+---
+layout: post
+author: jill
+series: 과일시리즈
+category: 노란색
+---
+BANANA
+```
+
+```md
+---
+layout: post
+author: ted
+series: 과일시리즈
+category: 초록색
+---
+Kiwifruit (often abbreviated as kiwi), or Chinese gooseberry is the
+```
+
+```md
+---
+layout: post
+author: qkrwogk
+---
+
+# 본인에 대해서 잘 설명할 수 있는 대표적인 프로젝트 경험
+```
+
+뭐 있는것도 있고 없는 것도 있고 이렇게 막 실험해보자. 
+
+```yml
+# /_config.yml
+collections:
+  series:
+  categories:
+```
+
+collections 사용은 이렇게 root 폴더에 `/_config.yml`파일을 만들어서 요런식으로 추가해주면 됨. 
+자동으로 page.series, page.categories 값들을 읽어서 분류해주나봄..?
+
+![스크린샷 2023-10-03 오전 2 29 26](https://user-images.githubusercontent.com/138586629/272042147-df3f28a7-17c6-4b82-a640-cfad71473f0c.png)
+
+`jekyll serve`로 다시 빌드해보면, 분류가 날짜가 아닌 색으로 먼저 분류되고, 이후에 날짜로 분류되는 것을 
+확인할 수 있다! 두 개 이상의 collection은 안되고 가장 마지막것만 되는 것 같다..? <br /><br />
+
+라고 생각했는데, 가만 보니 각 포스트에 `categories:`가 아닌 `category:`라고 적어서 저렇게 된거고, 
+한마디로 **collections와는 아무 상관 없는 거였다** ㅎ 대박 <br /><br />
+
+하여간 collections 없이 자동으로 폴더 분류를 하고싶다면 category 변수에 저렇게 값을 할당해주면 되는걸로. 
+이제 다시 `categories:`로 바꾸고 진짜 collections를 해보자.
+
+### collections 분류 결과 확인 (실패)
+
+stepbystep 진행하다 author.url 링크가 걸리지 않아 끝내 실패! 
+내일 다시 해보자. series 말고 author로 튜토리얼대로 진행해보고 실제 블로그 배포때 바꾸는 게 좋을듯. 
 
 ## 10. deployment : jekyll 빌드해서 배포
 
