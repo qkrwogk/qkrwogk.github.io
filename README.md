@@ -304,6 +304,11 @@ jekyll serve
 
 - jekyll serve 오류 해결
 - 5. includes : navigation 추가하기
+- 6. data files : _data 경로의 데이터 로딩하여 페이지 구성하기
+- 7. assets : css, js, image 로드
+- 8. blogging : 
+- 9. collections : 
+- 10. deployment : 
 
 ## jekyll serve 오류 해결
 
@@ -389,11 +394,97 @@ Jekyll에서 제공하는 `page.url`이라는 변수를 활용하면 현재 상�
 
 <img width="591" alt="스크린샷 2023-10-02 오후 4 26 54" src="https://user-images.githubusercontent.com/138586629/271907276-3af44d83-1565-421a-bbd6-de7d5edf259e.png">
 
-현재 페이지가 빨갛게 표시된다. CSS는 한번에 편집해보자~
+현재 페이지가 빨갛게 표시된다. CSS는 다음에 한번에 편집해보자~
+
+## 6. data files : _data 경로의 데이터 로딩하여 페이지 구성하기
+
+_data 폴더에 YAML, JSON, CSV 파일을 추가하면 데이터를 파일에서 불러와 활용할 수 있다. <br /><br />
+
+YAML 파일을 활용해보자. _data 폴더를 만들고 `navigation.yml` 파일을 추가한다.
+
+```yml
+# _data/navigation.yml
+- name: Home
+  link: /
+- name: About
+  link: /about.html
+```
+
+불러올 때는 `site.data.navigation`과 같이 사용할 수 있다. 아래에 사용 예시. 
+
+```html
+<!-- _includes/navigation.html -->
+<nav>
+    {% for item in site.data.navigation %}
+        <a href="{{ item.link }}" {% if page.url == item.link %}style="color: red;"{% endif %}>
+        {{ item.name }}
+        </a>
+    {% endfor %}
+</nav>
+```
+
+for문을 돌아 item으로 받고, item.name, item.link 등으로 각 속성에 접근할 수 있는 것을 확인할 수 있다.
+
+<img width="321" alt="스크린샷 2023-10-02 오후 4 48 47" src="https://user-images.githubusercontent.com/138586629/271911556-08f81d82-5aaf-4dd0-b889-91c97e624c95.png">
+
+
+똑같이 잘 동작하는 거 보니 잘 되나보다 그쵸?
+
+## 7. assets : css, js, image 로드
+
+<img width="234" alt="스크린샷 2023-10-02 오후 5 32 00" src="https://user-images.githubusercontent.com/138586629/271920810-af205dd0-7892-4684-bff2-b4f98458e409.png">
+
+위와 같이 root폴더 아래에 폴더를 만들어 상대경로로 정적 assets에 접근할 수 있다.
+
+```css
+/* assets/css/style.css */
+@import "nav";
+```
+
+```css
+/* assets/css/nav.css */
+.current {
+    color: green;
+}
+```
+
+위와 같이 예시 css를 추가해주고, styles.css를 link태그로 default.html에 추가해보자.
+
+```html
+<!-- _layouts/default.html -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page.title }}</title>
+    <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+    {% include navigation.html %}
+    {{ content }}
+</body>
+</html>
+```
+
+이제 현재 경로랑 같으면 style속성으로 글자색을 red로 변경하는 것에 더해, 현재 경로가 아니면 
+`class="current"`로 설정해 글자가 초록색으로 바뀌는지 확인해보자.
+
+```html
+<!-- _includes/navigation.html -->
+<a href="{{ item.link }}" {% if page.url == item.link %}style="color: red;"{% else %}class="current"{% endif %}>
+```
+
+https://user-images.githubusercontent.com/138586629/271926510-73e91e91-28d5-4733-a21d-15e7deda8659.mov
+
+잘되고~
+
+## 
 
 ## 학습메모
 
 1. [bundle update로 오류 해결](https://haereeroo.tistory.com/12)
+2. [liquid template language, if/else문](https://shopify.github.io/liquid/tags/control-flow/)
 
 
 ---
