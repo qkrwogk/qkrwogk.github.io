@@ -309,7 +309,7 @@ jekyll serve
 - 6. data files : _data 경로의 데이터 로딩하여 페이지 구성하기
 - 7. assets : css, js, image 로드
 - 8. blogging : _posts 경로로 .md 파일 렌더
-- 9. collections : series별, category별로 별도 페이지 만들기
+- 9. collections : series별, category별로 별도 페이지 만들기 (미완료)
 - 10. deployment : jekyll 빌드해서 배포
 
 ## jekyll serve 오류 해결
@@ -666,7 +666,7 @@ https://user-images.githubusercontent.com/138586629/272024094-f3ba2a85-107c-4480
 
 얼마나 멋있냐 이말씀이야~
 
-## 9. collections : series별, category별로 별도 페이지 만들기
+## 9. collections : series별, category별로 별도 페이지 만들기 (미완료)
 
 튜토리얼엔 author로 분류하지만, 보통 만드는 개인 블로그에선 카테고리나 시리즈별로 분류하니까 그렇게 하겠음.
 
