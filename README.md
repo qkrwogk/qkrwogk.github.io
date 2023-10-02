@@ -299,8 +299,101 @@ jekyll serve
 
 
 # 231002
+
 ## 목차
+
+- jekyll serve 오류 해결
+- 5. includes : navigation 추가하기
+
+## jekyll serve 오류 해결
+
+<img width="577" alt="스크린샷 2023-10-02 오후 4 16 15" src="https://user-images.githubusercontent.com/138586629/271905325-4b015f19-ac4c-42b6-8097-244d10370f1d.png">
+
+갑자기 요상한 에러가 뜨면서 jekyll serve가 안되더라
+
+```
+/opt/homebrew/lib/ruby/site_ruby/3.2.0/bundler/runtime.rb:304:in `check_for_activated_spec!': You have already activated rexml 3.2.6, but your Gemfile requires rexml 3.2.5. Prepending `bundle exec` to your command may solve this. (Gem::LoadError)
+        from /opt/homebrew/lib/ruby/site_ruby/3.2.0/bundler/runtime.rb:25:in `block in setup'
+        from /opt/homebrew/lib/ruby/site_ruby/3.2.0/bundler/spec_set.rb:165:in `each'
+        from /opt/homebrew/lib/ruby/site_ruby/3.2.0/bundler/spec_set.rb:165:in `each'
+        from /opt/homebrew/lib/ruby/site_ruby/3.2.0/bundler/runtime.rb:24:in `map'
+        from /opt/homebrew/lib/ruby/site_ruby/3.2.0/bundler/runtime.rb:24:in `setup'
+        from /opt/homebrew/lib/ruby/site_ruby/3.2.0/bundler.rb:162:in `setup'
+        from /opt/homebrew/lib/ruby/gems/3.2.0/gems/jekyll-4.3.2/lib/jekyll/plugin_manager.rb:52:in `require_from_bundler'
+        from /opt/homebrew/lib/ruby/gems/3.2.0/gems/jekyll-4.3.2/exe/jekyll:11:in `<top (required)>'
+        from /opt/homebrew/lib/ruby/gems/3.2.0/bin/jekyll:25:in `load'
+        from /opt/homebrew/lib/ruby/gems/3.2.0/bin/jekyll:25:in `<main>'
+```
+
+학습메모 1을 참고하여 해결했다. 
+구구절절한 설명이 많은데 결국 sudo bundle update로 바로 오류가 해결되었다. 
+
+```bash
+sudo bundle update
+```
+
+<img width="570" alt="스크린샷 2023-10-02 오후 4 17 48" src="https://user-images.githubusercontent.com/138586629/271905581-7727f401-a705-4c17-a48f-e593486937e7.png">
+
+
+## 5. includes : navigation 추가하기
+
+root폴더에 _includes 디렉토리를 만들어주고, 
+`_includes/navigation.html`을 작성한다.
+
+```html
+<!-- _includes/navigation.html -->
+<nav>
+    <a href="/">Home</a>
+    <a href="/about.html">About</a>
+  </nav>
+```
+
+이후 default.html에 navigation.html을 "include"해준다. (liquid 템플릿 엔진의 기능인걸로)
+
+```html
+<!-- _layouts/default.html -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page.title }}</title>
+</head>
+<body>
+    {% include navigation.html %}
+    {{ content }}
+</body>
+</html>
+```
+
+https://user-images.githubusercontent.com/138586629/271906095-5586a602-14ab-4f03-86e0-ffbdade7244d.mov
+
+상단에 nav바가 잘 보이고, 링크도 잘 작동한다.
+
+---
+
+현재 페이지를 하이라이팅해보자. 
+Jekyll에서 제공하는 `page.url`이라는 변수를 활용하면 현재 상대경로를 확인할 수 있다.
+
+```html
+<!-- _includes/navigation.html -->
+<nav>
+    <a href="/" {% if page.url == "/" %}style="color: red;"{% endif %}>
+      Home
+    </a>
+    <a href="/about.html" {% if page.url == "/about.html" %}style="color: red;"{% endif %}>
+      About
+    </a>
+  </nav>
+```
+
+<img width="591" alt="스크린샷 2023-10-02 오후 4 26 54" src="https://user-images.githubusercontent.com/138586629/271907276-3af44d83-1565-421a-bbd6-de7d5edf259e.png">
+
+현재 페이지가 빨갛게 표시된다. CSS는 한번에 편집해보자~
+
 ## 학습메모
+
+1. [bundle update로 오류 해결](https://haereeroo.tistory.com/12)
 
 
 ---
