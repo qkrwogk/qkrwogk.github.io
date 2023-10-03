@@ -884,6 +884,7 @@ JEKYLL_ENV=production bundle exec jekyll build
 ## 목차
 
 - 9. collections : author별로 포스트 묶기
+- topic별로 collections 만들어 메뉴 바에서 접근 가능한 페이지로
 
 ## 9. collections : author별로 포스트 묶기
 
@@ -1123,6 +1124,103 @@ post page에 활성화된 author 버튼. 클릭하면
 
 author page로! 이제 다 된다 요호호
 
+
+## topic별로 collections 만들어 메뉴 바에서 접근 가능한 페이지로
+
+_posts 폴더 안에 포스팅을 다 넣고 필요한 것만 분류하고 싶었는데, 
+학습메모 2, 3 참고하여 확인해보니 결국 front matter로 분류를 해놓고 collection을 
+쓰는거지 폴더 내에 넣는 건 안되나보다 관련없는 얘기였음. <br /><br />
+
+그래도 어느 정도 유용한 것은 collections 방식으로 topics를 만들고(_topics/), 
+topic별 게시물은 _posts가 아니라 다른 폴더(_lectures/)에 넣어둔다던가 
+그런건 가능하겠더라. 음... 좀 더 고민해볼 필요가 있겠어.
+
+---
+
+찾았다! 학습메모 4!
+
+<img width="683" alt="스크린샷 2023-10-03 오후 3 31 56" src="https://user-images.githubusercontent.com/138586629/272166821-befd5fd6-0025-4bbe-9f2b-9271e9301576.png">
+
+결론은 _posts에 폴더를 만들어서 .md 넣어도 알아서 모두 posts로 조회가 되며, 
+이를 조건문에서 판별하고 싶다면 `a.path contains '폴더명'`과 같이 판별해주면 됨. 
+
+<img width="232" alt="스크린샷 2023-10-03 오후 3 33 37" src="https://user-images.githubusercontent.com/138586629/272167175-281f06dd-6d46-4e85-846a-527437b454c4.png">
+
+해보자. 파일 넣어두고
+
+```html
+<!-- /blog.html -->
+---
+layout: default
+title: Blog
+---
+<h1>Latest Posts</h1>
+
+<ul>
+  {% for post in site.posts %}
+    <li>
+      <h2><a href="{{ post.url }}">{{ post.title }}</a></h2>
+      {{ post.excerpt }}
+    </li>
+    {% if post.path contains 'tests' %}
+        <h1>hey</h1>
+    {% endif %}
+  {% endfor %}
+</ul>
+```
+
+`/blog.html`에서 tests가 경로에 포함된 post면 hey! 한번 날려주자.
+
+```html
+<!-- /test.html -->
+---
+layout: default
+title: Tests
+---
+<h1>Latest Posts</h1>
+
+<ul>
+  {% for post in site.posts %}
+    {% if post.path contains 'tests' %}
+      <li>
+        <h2><a href="{{ post.url }}">{{ post.title }}</a></h2>
+        {{ post.excerpt }}
+      </li>
+    {% endif %}
+  {% endfor %}
+</ul>
+```
+
+추가로 `/test.html`을 만들어 tests에 있는 친구들만 보여주는 페이지를 따로 만들어주자. 
+
+```yml
+# /_data/navigation.yml
+- name: Home
+  link: /
+- name: About
+  link: /about.html
+- name: Blog
+  link: /blog.html
+- name: Staff
+  link: /staff.html
+- name: Test
+  link: /test.html
+```
+
+nav에도 추가시켜 주면~ 
+
+<img width="807" alt="스크린샷 2023-10-03 오후 3 42 04" src="https://user-images.githubusercontent.com/138586629/272168854-8ec546ab-53ce-4911-85da-acab81d003db.png">
+
+hey 잘 보이고!
+
+<img width="387" alt="스크린샷 2023-10-03 오후 3 43 09" src="https://user-images.githubusercontent.com/138586629/272169051-0e1a34e4-0550-4392-be2b-b98bdcee9ca2.png">
+
+Test 페이지에서도 잘 걸러져 나온다! 굳 
+
+
 ## 학습메모
 
 1. [jekyll step by step, 9. collections](https://jekyllrb.com/docs/step-by-step/09-collections/)
+2. [nested collection 가능한가?](https://stackoverflow.com/questions/37277738/can-i-create-nested-collections-in-jekyll)
+3. [nested collection 예제](https://github.com/paddycarver/jekyll-nested-collections-example/blob/master/_config.yml)
+4. [nested directory 속 post 불러오는 법](https://stackoverflow.com/questions/15279147/how-does-jekyll-treat-posts-in-posts-subdir)

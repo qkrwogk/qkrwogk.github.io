@@ -1,17 +1,16 @@
 ---
 layout: default
-title: Blog
+title: Tests
 ---
 <h1>Latest Posts</h1>
 
 <ul>
   {% for post in site.posts %}
-    <li>
-      <h2><a href="{{ post.url }}">{{ post.title }}</a></h2>
-      {{ post.excerpt }}
-    </li>
     {% if post.path contains 'tests' %}
-        <h1>hey</h1>
+      <li>
+        <h2><a href="{{ post.url }}">{{ post.title }}</a></h2>
+        {{ post.excerpt }}
+      </li>
     {% endif %}
   {% endfor %}
 </ul>
