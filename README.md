@@ -8,7 +8,7 @@
 
 ## 카테고리 구성
 
-### 코딩 테스트 준비
+### 코딩테스트 준비
 
 - 바킹독 알고리즘 강의 기반 기초 알고리즘/자료구조 정리 + 관련 BOJ 문제풀이 과정
 - 프로그래머스 구현문제 풀이 과정 기록
@@ -1125,7 +1125,9 @@ post page에 활성화된 author 버튼. 클릭하면
 author page로! 이제 다 된다 요호호
 
 
-## topic별로 collections 만들어 메뉴 바에서 접근 가능한 페이지로
+## topics별로 분류된 post 관리
+
+### Directory Nesting 테스트
 
 _posts 폴더 안에 포스팅을 다 넣고 필요한 것만 분류하고 싶었는데, 
 학습메모 2, 3 참고하여 확인해보니 결국 front matter로 분류를 해놓고 collection을 
@@ -1218,9 +1220,121 @@ hey 잘 보이고!
 Test 페이지에서도 잘 걸러져 나온다! 굳 
 
 
+### 계획된 카테고리 구성대로 Topics에 리스팅
+
+이제 미리 구성해 둔 카테고리 구성대로 폴더를 배치하고 파일 몇 개를 테스트로 넣어보자.
+
+<img width="223" alt="스크린샷 2023-10-03 오후 5 22 50" src="https://user-images.githubusercontent.com/138586629/272194405-f4740981-ed36-465e-ba64-6868fc4902ab.png">
+
+학습메모 5를 참고하여, Topic과 하위 Subtopic 정보를 데이터파일로 만들어줬다. 앞으로 추가/제거할때도 폴더랑 일치하게 해당 파일만 편집해주면 되겠다. 
+
+```json
+// /_data/topics.json
+[
+  {
+    "name": "기술면접 준비",
+    "subtopics": [
+      {
+        "name": "정보보안"
+      },
+      {
+        "name": "프로필"
+      },
+      {
+        "name": "CS 기본지식"
+      }
+    ]
+  },
+  {
+    "name": "코딩테스트 준비",
+    "subtopics": [
+      {
+        "name": "문제풀이"
+      },
+      {
+        "name": "자료구조와 알고리즘"
+      }
+    ]
+  },
+  {
+    "name": "포트폴리오 준비",
+    "subtopics": [
+      {
+        "name": "문제풀이"
+      },
+      {
+        "name": "기술블로그 구현"
+      }
+    ]
+  }
+]
+```
+
+yml 대신 json으로 한 번 해봤다. 이제 이 데이터를 활용해서 path에 해당 문자열이 포함되면 리스팅하도록 topic.html을 작성해보자. 
+`/topic.html`이 핵심!
+
+```html
+<!-- /topic.html -->
+---
+layout: default
+title: Topics
+---
+<h1>Topics</h1>
+
+<div>
+  {% for topic in site.data.topics %}
+    <h2>{{ topic.name }}</h2>
+    <ul>
+      {% for post in site.posts %}
+        {% if post.path contains topic.name %}
+          <li>
+            <h2><a href="{{ post.url }}">{{ post.title }}</a></h2>
+            {{ post.excerpt }}
+          </li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+    <br /><br />
+  {% endfor %}
+</div>
+```
+
+마지막으로 navigation에도 Test대신 Topic을 넣어준다. 
+
+```yml
+# /_data/navigation.yml
+- name: Home
+  link: /
+- name: About
+  link: /about.html
+- name: Blog
+  link: /blog.html
+- name: Staff
+  link: /staff.html
+- name: Topics
+  link: /topic.html
+```
+
+이제 실행해보자!
+
+<img width="482" alt="스크린샷 2023-10-03 오후 5 16 19" src="https://user-images.githubusercontent.com/138586629/272192710-42390a6b-1d64-4f3d-b116-ed3aba81b374.png">
+
+리스트 잘 출력되고
+
+<img width="468" alt="스크린샷 2023-10-03 오후 5 33 57" src="https://user-images.githubusercontent.com/138586629/272197863-92c394f1-f184-4425-b587-573adccec4cd.png">
+
+링크도 잘 들어가진다! 굳!
+
+### 앞으로 더 발전시킬 포인트
+
+- class 속성 넣고 CSS 편집
+- Topic별 페이지 만들어서 백링크까지 만들기
+
+
 ## 학습메모
 
 1. [jekyll step by step, 9. collections](https://jekyllrb.com/docs/step-by-step/09-collections/)
 2. [nested collection 가능한가?](https://stackoverflow.com/questions/37277738/can-i-create-nested-collections-in-jekyll)
 3. [nested collection 예제](https://github.com/paddycarver/jekyll-nested-collections-example/blob/master/_config.yml)
 4. [nested directory 속 post 불러오는 법](https://stackoverflow.com/questions/15279147/how-does-jekyll-treat-posts-in-posts-subdir)
+5. [jekyll datafile](https://jekyllrb.com/docs/datafiles/)
