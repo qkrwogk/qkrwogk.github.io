@@ -1,0 +1,22 @@
+---
+layout: default
+title: Topics
+---
+<h1>Topics</h1>
+
+<div>
+  {% for topic in site.data.topics %}
+    <h2>{{ topic.name }}</h2>
+    <ul>
+      {% for post in site.posts %}
+        {% if post.path contains topic.name %}
+          <li>
+            <h2><a href="{{ post.url }}">{{ post.title }}</a></h2>
+            {{ post.excerpt }}
+          </li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+    <br /><br />
+  {% endfor %}
+</div>
