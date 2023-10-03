@@ -882,4 +882,247 @@ JEKYLL_ENV=production bundle exec jekyll build
 
 # 231003
 ## 목차
+
+- 9. collections : author별로 포스트 묶기
+
+## 9. collections : author별로 포스트 묶기
+
+차근차근 다시 진행해보자.
+
+```yml
+# /_config.yml
+collections:
+  authors:
+```
+
+```md
+<!-- _authors/jill.md -->
+---
+short_name: jill
+name: Jill Smith
+position: Chief Editor
+---
+Jill is an avid fruit grower based in the south of France.
+```
+
+```md
+<!-- _authors/ted.md -->
+---
+short_name: ted
+name: Ted Doe
+position: Writer
+---
+Ted has been eating fruit since he was baby.
+```
+
+```html
+<!-- /staff.html -->
+---
+layout: default
+title: Staff
+---
+<h1>Staff</h1>
+
+<ul>
+  {% for author in site.authors %}
+    <li>
+      <h2>{{ author.name }}</h2>
+      <h3>{{ author.position }}</h3>
+      <p>{{ author.content | markdownify }}</p>
+    </li>
+  {% endfor %}
+</ul>
+```
+
+```yml
+# _data/navigation.yml
+- name: Home
+  link: /
+- name: About
+  link: /about.html
+- name: Blog
+  link: /blog.html
+- name: Staff
+  link: /staff.html
+```
+
+<img width="530" alt="스크린샷 2023-10-03 오전 11 53 25" src="https://user-images.githubusercontent.com/138586629/272134612-ae16b7b4-28f2-4a29-9f2d-a7fce12f796a.png">
+
+Staff 페이지 잘 출력됨
+
+---
+
+`collections`는 default로 page를 전달하지 않는 것으로 설정되어 있어서, 이를 커스텀하려면 
+
+```yml
+# /_config.yml
+collections:
+  authors:
+    output: true
+```
+
+`output: true`를 추가해주면 된다고 한다. 그러면 `author.url`로 접근할 수 있다는데!
+
+```html
+<!-- /staff.html -->
+---
+layout: default
+title: Staff
+---
+<h1>Staff</h1>
+
+<ul>
+  {% for author in site.authors %}
+    <li>
+      <h2><a href="{{ author.url }}">{{ author.name }}</a></h2>
+      <h3>{{ author.position }}</h3>
+      <p>{{ author.content | markdownify }}</p>
+    </li>
+  {% endfor %}
+</ul>
+```
+
+a 태그로 링크 달아줌. 
+
+<img width="476" alt="스크린샷 2023-10-03 오전 11 56 41" src="https://user-images.githubusercontent.com/138586629/272135068-dcd18882-68c6-4e92-8afc-f9735c268560.png">
+
+링크 생겼고~
+
+<img width="497" alt="스크린샷 2023-10-03 오전 11 57 07" src="https://user-images.githubusercontent.com/138586629/272135151-93a1bfc8-45d5-4c9c-a740-dc797b68b10f.png">
+
+클릭하면 각 author별 페이지로 잘 들어가지고~~ 어제는 왜 안됐던거야 ㅋ
+
+---
+
+author 페이지의 레이아웃도 편집해보자. 
+
+```md
+---
+layout: author
+short_name: qkrwogk
+name: Jaeha Park
+position: Hacker Programmer
+---
+# Jaeha Park is a genius.
+```
+
+`layout: author` 추가 후에
+
+```html
+<!-- _layouts/author.html -->
+---
+layout: default
+---
+<h1>{{ page.name }}</h1>
+<h2>{{ page.position }}</h2>
+
+{{ content }}
+```
+
+`_layouts/author.html` 작성
+
+<img width="471" alt="스크린샷 2023-10-03 오전 11 59 40" src="https://user-images.githubusercontent.com/138586629/272135536-38bf3ad5-3fb9-4487-aef6-1b20dffa2f0b.png">
+
+잘 됨
+
+![스크린샷 2023-10-03 오후 12 11 36](https://user-images.githubusercontent.com/138586629/272137063-ca757baa-7c00-4aef-8509-0bd7349b0f1b.png)
+
+
+참고로 build 결과인 _site에서 이렇게 별도 폴더에 보관된다.
+
+### Front matter defaults
+
+여기서는 `_config.yml` 설정을 통해 post면 post 레이아웃, author면 author 레이아웃, 둘 다 아니면 
+default 레이아웃 이런식으로 디폴트 레이아웃 설정을 하는 법에 대해서 배운다. 이런건 빨리좀 가르쳐줘 
+
+```yml
+# /_config.yml
+collections:
+  authors:
+    output: true
+
+defaults:
+  - scope:
+      path: ""
+      type: "authors"
+    values:
+      layout: "author"
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"
+  - scope:
+      path: ""
+    values:
+      layout: "default"
+```
+
+대충 scope->type이 `authors`면 value->layout으로 `author`를 deafult로 설정하라!는 뜻. 
+
+<img width="498" alt="스크린샷 2023-10-03 오후 3 01 01" src="https://user-images.githubusercontent.com/138586629/272160584-2f804f2d-e9dd-4cc0-9d24-696f5d108bd7.png">
+
+이제 `layout: "post"`를 설정하지 않은 다른 author page도 레이아웃이 적용되어 보여진다. 성공!
+
+### List author's posts
+
+`_layouts/author.html`을 다시 한 번 편집해보자. 
+
+```html
+<!-- _layouts/author.html -->
+---
+layout: default
+---
+<h1>{{ page.name }}</h1>
+<h2>{{ page.position }}</h2>
+
+{{ content }}
+
+<h2>Posts</h2>
+<ul>
+  {% assign filtered_posts = site.posts | where: 'author', page.short_name %}
+  {% for post in filtered_posts %}
+    <li><a href="{{ post.url }}">{{ post.title }}</a></li>
+  {% endfor %}
+</ul>
+```
+
+where절로 author 이름이 같은 posts를 필터해서, 해당 author의 post를 리스팅해준다! 
+
+<img width="450" alt="스크린샷 2023-10-03 오후 12 08 52" src="https://user-images.githubusercontent.com/138586629/272136685-bf0381cf-0383-4752-846e-eec6275d6498.png">
+
+너무 멋지다! 드디어 조금씩 블로그스러운 기능들이..! 
+
+### Link to authors page
+
+각 포스트에서도 author page에 접근할 수 있도록 링크를 걸어 보자.
+
+```html
+<!-- _layouts/post.html -->
+---
+layout: default
+---
+<h1>{{ page.title }}</h1>
+
+<p>
+  {{ page.date | date_to_string }}
+  {% assign author = site.authors | where: 'short_name', page.author | first %}
+  {% if author %}
+    - <a href="{{ author.url }}">{{ author.name }}</a>
+  {% endif %}
+</p>
+
+{{ content }}
+```
+
+<img width="936" alt="스크린샷 2023-10-03 오후 3 01 17" src="https://user-images.githubusercontent.com/138586629/272160635-2016aa94-c924-47c3-bcb3-58fbd306c98e.png">
+
+post page에 활성화된 author 버튼. 클릭하면
+
+<img width="920" alt="스크린샷 2023-10-03 오후 3 01 26" src="https://user-images.githubusercontent.com/138586629/272160666-c0f18ed3-e19a-4204-9516-20922aa0003f.png">
+
+author page로! 이제 다 된다 요호호
+
 ## 학습메모
+
+1. [jekyll step by step, 9. collections](https://jekyllrb.com/docs/step-by-step/09-collections/)
