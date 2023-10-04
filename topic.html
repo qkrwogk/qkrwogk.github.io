@@ -4,19 +4,27 @@ title: Topics
 ---
 <h1>Topics</h1>
 
-<div>
+<div class="topic">
   {% for topic in site.data.topics %}
-    <h2>{{ topic.name }}</h2>
-    <ul>
-      {% for post in site.posts %}
-        {% if post.path contains topic.name %}
-          <li>
-            <h2><a href="{{ post.url }}">{{ post.title }}</a></h2>
-            {{ post.excerpt }}
-          </li>
-        {% endif %}
-      {% endfor %}
-    </ul>
-    <br /><br />
+    <div class="topic-container">
+      <div class="topic-name">
+        <h2>{{ topic.name }}</h2>
+      </div>
+      <ul>
+        {% for post in site.posts %}
+          {% if post.path contains topic.name %}
+            <li>
+              <div class="post-head">
+                <div class="title"><a href="{{ post.url }}">{{ post.title || upcase }}</a></div>
+                <div class="date">{{ post.date | date_to_string }}</div>
+              </div>
+              <div class="preview">
+                {{ post.excerpt }}
+              </div>
+            </li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+    </div>
   {% endfor %}
 </div>

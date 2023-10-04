@@ -6,6 +6,10 @@ collections:
 
 defaults:
   - scope:
+      path: "README.md"
+    values:
+      permalink: "index.html"
+  - scope:
       path: ""
       type: "authors"
     values:
