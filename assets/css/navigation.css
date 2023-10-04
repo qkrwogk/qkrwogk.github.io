@@ -1,0 +1,18 @@
+.nav {
+    & .menu {
+        width: 10vw;
+        height: 1rem;
+
+        background: rgb(180, 221, 192);
+
+        & a {
+            width: 100%;
+
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+    }
+    & .current {
+        color: green;
+    }
+}

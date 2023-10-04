@@ -881,10 +881,11 @@ JEKYLL_ENV=production bundle exec jekyll build
 
 
 # 231003
+
 ## 목차
 
 - 9. collections : author별로 포스트 묶기
-- topic별로 collections 만들어 메뉴 바에서 접근 가능한 페이지로
+- topics별로 분류하여 post 자동 관리하기
 
 ## 9. collections : author별로 포스트 묶기
 
@@ -1338,3 +1339,231 @@ title: Topics
 3. [nested collection 예제](https://github.com/paddycarver/jekyll-nested-collections-example/blob/master/_config.yml)
 4. [nested directory 속 post 불러오는 법](https://stackoverflow.com/questions/15279147/how-does-jekyll-treat-posts-in-posts-subdir)
 5. [jekyll datafile](https://jekyllrb.com/docs/datafiles/)
+
+
+---
+---
+
+
+# 231004
+
+## 목차
+
+- class 속성 넣고 CSS 만들기
+
+## class 속성 넣고 CSS 만들기
+
+비주얼이 도저히 못봐주겠어서 (왼쪽에 붙어있으니 잘 읽히지도 않더라) 레이아웃부터 바꿔줬다.
+
+```html
+<!-- default.html -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page.title }}</title>
+    <link rel="stylesheet" href="/assets/css/default.css">
+    {% feed_meta %}
+    {% seo %}
+</head>
+<body>
+    <nav class="nav">
+        {% include navigation.html %}
+    </nav>
+    <div class="content">
+        {{ content }}
+    </div>
+</body>
+</html>
+```
+
+`default.html`은 크게 nav, content로 나뉘며 각각 default.css에서 위치를 absolute로 잡아줌. 
+
+```css
+/* default.css */
+@import "navigation.css";
+@import "topic.css";
+
+.nav {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    gap: 1rem;
+    box-sizing: border-box;
+
+    width: 90vw;
+    height: 2rem;
+
+    position: absolute;
+    left: 50%;
+    top: 1rem;
+    transform: translate(-50%, 0%);
+
+    border: 1px solid black;
+}
+
+.content {
+    width: 90vw;
+
+    padding: 2rem 3rem;
+    box-sizing: border-box;
+
+    position: absolute;
+    left: 50%;
+    top: 5rem;
+    transform: translate(-50%, 0%);
+
+    border: 1px solid black;
+}
+```
+
+navigation과 topic(+blog)탭에 대한 css는 별도의 파일로 관리해줬다. 
+
+```css
+/* navigation.css */
+.nav {
+    & .menu {
+        width: 10vw;
+        height: 1rem;
+
+        background: rgb(180, 221, 192);
+
+        & a {
+            width: 100%;
+
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+    }
+    & .current {
+        color: green;
+    }
+}
+```
+
+가독성을 좋게 하고 싶어서 학습메모 2를 참고하여 `css nesting`을 적극 활용해봄! 
+이전엔 `.nav .menu a`이런식으로 매번 타고들어가줬는데 nesting을 하니 확실히 div 포함관계가 명확하다. <br /><br />
+
+일전에 개발하는 동료가 nesting이 유지보수나 재사용성이 힘들다고 했는데, 나는 반대다. 
+경험해보니 재사용 가능한 건 따로 빼두면 되는 것이고, 위와 같이 골격을 만들어주는 코드는 nesting이 나음. 
+<br /><br />
+
+button style이나 input style처럼 서버 전체에서 통일할 부분은 nesting 없이 
+별도의 파일로 import 해서 해결해주면 된다. 
+
+```css
+/* topic.css */
+.topic {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    box-sizing: border-box;
+
+    & .topic-container {
+        border-top: 0.031rem solid black;
+    }
+
+    & .topic-name {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    & ul {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        width: 100%;
+        
+        list-style-type: none;
+        margin-block-start: 0;
+        margin-block-end: 0;
+        margin-inline-start: 0;
+        margin-inline-end: 0;
+        padding-inline-start: 0;
+
+        & li {
+            display: flex;
+            flex-direction: column;
+            gap: 0px;
+            box-sizing: border-box;
+
+            width: 70vw;
+
+            & .post-head {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                padding: 0.2rem 1rem;
+                gap: 2rem;
+                box-sizing: border-box;
+
+                height: 2rem;
+                background: lightgray;
+
+                & .title {
+                    font-weight: 500;
+                    font-size: 1.5rem;
+                    & a {
+                        color: black;
+                        text-decoration: none;
+
+                        width: 100%;
+                    }
+                }
+                & .date {
+                    font-weight: 200;
+                    font-size: 0.75rem;
+                    line-height: 2.25rem;
+                }
+
+            }
+            & .preview {
+                display: flex;
+                flex-direction: row;
+                justify-content: flex-start;
+                padding: 1rem;
+                box-sizing: border-box;
+
+                & *  {
+                    font-weight: 200;
+                    font-size: 1rem;
+                }
+
+                border: 0.031rem solid lightgray;
+            }
+        }
+    }
+}
+```
+
+마지막 `topic.css`. 포인트 3개 잡고 간다. 
+
+1. 고칠 게 많아도 `px`가 아닌 `rem, %, vw` 등 상대적인 단위를 많이 사용하도록 노력했다. 
+이렇게 해야 모바일 등 다른 환경에서 적절한 크기로 보여주기 용이하다고 함. 
+2. 반응형도 고려하여 이전에 고정 width를 했던 것과는 달리, %, vw로 width를 설정해주고 gap 대신 
+flex의 `space-between` 속성 등을 이용하도록 노력했다. 폭이 달라져도 예쁘게 보임
+3. 화면 가운데 위치하기 위해 직접 `calc`로 계산하는 것이 아닌 `left: 50%`, 
+`transform: translate(-50%, 0)`을 활용했다. 화면 크기나 기타 환경에 영향받지 않고 깔끔하게 가운데 정렬. 
+
+---
+
+<img width="1507" alt="스크린샷 2023-10-04 오후 11 34 16" src="https://user-images.githubusercontent.com/138586629/272612218-8a73a19e-f2c0-4878-add2-f2622af46191.png">
+
+<img width="1512" alt="스크린샷 2023-10-04 오후 11 34 54" src="https://user-images.githubusercontent.com/138586629/272612328-b97730c0-fceb-44a0-bdf4-814d9e4fce3a.png">
+
+훨씬 낫다! 
+
+<img width="608" alt="스크린샷 2023-10-04 오후 11 49 49" src="https://user-images.githubusercontent.com/138586629/272616826-f8c754b0-94c3-484e-8117-0e74da5897f3.png">
+
+화면 크기가 줄어들어도 예쁘게 배치됨을 확인할 수 있다. 
+
+## 학습메모
+
+공식문서만 보도록 노력함. 
+
+1. [liquid filter, upcase](https://shopify.github.io/liquid/filters/upcase/)
+2. [CSS Nesting](https://developer.chrome.com/articles/css-nesting/)
+3. [translate css](https://developer.mozilla.org/en-US/docs/Web/CSS/transform-function/translate)
