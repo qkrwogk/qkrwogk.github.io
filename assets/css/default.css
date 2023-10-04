@@ -1,5 +1,6 @@
 @import "navigation.css";
 @import "topic.css";
+@import "post.css";
 
 .nav {
     display: flex;
