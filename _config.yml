@@ -19,6 +19,7 @@ defaults:
       type: "posts"
     values:
       layout: "post"
+      render_with_liquid: false
   - scope:
       path: ""
     values:
@@ -28,3 +29,8 @@ plugins:
   - jekyll-feed
   - jekyll-sitemap
   - jekyll-seo-tag
+
+markdown: kramdown
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge

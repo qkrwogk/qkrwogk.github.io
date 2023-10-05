@@ -1,0 +1,10 @@
+h1, h2 {
+    border-bottom: 0.031rem solid lightgray;
+}
+img {
+    max-width: 100%;
+    border: 0.031rem solid lightgray;
+}
+p {
+    font-weight: 100;
+}
