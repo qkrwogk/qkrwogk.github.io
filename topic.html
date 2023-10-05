@@ -19,7 +19,12 @@ title: Topics
                 <div class="date">{{ post.date | date_to_string }}</div>
               </div>
               <div class="preview">
-                {{ post.excerpt }}
+                <div class="excerpt">
+                  {{ post.excerpt }}
+                </div>
+                <div class="path">
+                  {{ post.path }}
+                </div>
               </div>
             </li>
           {% endif %}
