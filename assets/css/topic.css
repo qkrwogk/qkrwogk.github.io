@@ -35,20 +35,31 @@
 
             width: 70vw;
 
+            &:hover {
+                & .post-head {
+                    background: rgba(211, 211, 211, 0.6);
+                }
+                & .preview {
+                    border: 0.031rem solid rgba(211, 211, 211, 0.6);
+                }
+            }
+
             & .post-head {
                 display: flex;
                 flex-direction: row;
+                align-items: center;
                 justify-content: space-between;
                 padding: 0.2rem 1rem;
                 gap: 2rem;
                 box-sizing: border-box;
 
-                height: 2rem;
+                height: auto;
                 background: lightgray;
 
                 & .title {
-                    font-weight: 500;
-                    font-size: 1.5rem;
+                    font-weight: 700;
+                    font-size: 1rem;
+                    line-height: 1.75rem;
                     & a {
                         color: black;
                         text-decoration: none;
@@ -59,20 +70,20 @@
                 & .date {
                     font-weight: 200;
                     font-size: 0.75rem;
-                    line-height: 2.25rem;
+                    line-height: 1.75rem;
                 }
 
             }
             & .preview {
                 display: flex;
-                flex-direction: row;
+                flex-direction: column;
                 justify-content: flex-start;
                 padding: 1rem;
                 box-sizing: border-box;
 
                 & *  {
                     font-weight: 200;
-                    font-size: 1rem;
+                    font-size: 0.9rem;
                 }
 
                 border: 0.031rem solid lightgray;
