@@ -3,6 +3,52 @@
 ## 목차
 
 
+- Preview
+- Wireless Communication
+- Questions
+
+## Preview
+
+- 주파수 (frequency)
+  - Propagation(전파)
+  - Modulation(변조)
+  - Radio Frequency and Baseband (무선 주파수(radio=wireless)와 기저대역)
+
+- 대역폭 (bandwidth)
+
+- Spectrum of 5G
+  - Spectrum for Mobile Systems (모바일 시스템을 위한 스펙트럼)
+  - Frequency Bands for NR (NR(New Radio)을 위한 주파수 대역)
+  - RF Exposure Above 6GHz (6GHz를 초과한 무선 노출)
+
+## Wireless Communication
+
+### Wireline Communication과 Wireless Communication 간엔 어떤 차이가 있을까?
+
+### Electric Circuit과 그로 인한 Electromagnetic Wave (전자기 유도)
+
+- Gauss' Law
+- Gauss' Law for magnetism
+- Faraday's Law
+- Ampere-Maxwell Law
+
+### Signal Propagation Basic (신호 전파의 기본)
+
+- RF(무선 주파수) 신호는 빛의 속도로 공간을 통해 전파한다 (`c = 3*10^8 m/s`)
+  - 빛의 속도
+  - `Wavelength(파장) = c/frequency`
+  - Physical size is discussed in terms of wavelength(파장)
+    -> propagation characteristics vary with frequency
+    - 300 MHz -> 1 meter
+    - 3 GHz -> 10 cm
+    - 30 GHz -> 1 cm (이 이상은 mmWave)
+
+- Power Density and dB (전력 밀도와 데시벨)
+  - 전파 손실은 in-out(입력과 출력의) 전력 비율로 설명한다.
+    - `dB = 10 log (P_2/P_1)`
+  - 전압은 루트로 다루어짐.
+
+### Free Space Propagation (자유공간 전파)
 
 
 ## Questions
