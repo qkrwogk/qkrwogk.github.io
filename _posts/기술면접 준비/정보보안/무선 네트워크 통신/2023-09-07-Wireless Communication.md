@@ -2,15 +2,24 @@
 
 ## 목차
 
-- Wireless Communication
-- Questions
 
-## Wireless Communication
+
 
 ## Questions
 
--  What is the Maxwell equation and how is it related to the wireless communication?
-  - Maxwell equation은 무엇이고, 무선 통신과 어떤 관련성이 있는가?
+###  What is the Maxwell equation and how is it related to the wireless communication?
+
+> Maxwell equation은 무엇이고, 무선 통신과 어떤 관련성이 있는가?
+
+<img width="498" alt="스크린샷 2023-10-05 오후 9 47 46" src="https://user-images.githubusercontent.com/138586629/272906916-d02cd16f-102d-44db-aa2b-8e9fbcc17779.png">
+
+<img width="468" alt="스크린샷 2023-10-05 오후 9 49 11" src="https://user-images.githubusercontent.com/138586629/272907286-ba7d357b-4600-4cff-abea-8adf072a7b21.png">
+
+학습메모 1 참고. 맥스웰 방정식은 결국 전자기파의 존재를 증명했다. <br /><br />
+
+이로 인해 전력이 발생하면 신호가 전파되고 무선 통신이 가능한 것이다.
+
+
 - Explain a wave’s frequency and wavelength (=파장).
   -  파동의 주파수와 파장에 대해 설명하시오.
 - What are the 5G mobile communication frequencies?
@@ -27,3 +36,7 @@
 
 - Explain source/channel coding, modulation in wireless communication.
 
+
+## 학습메모
+
+1. [Maxell 방정식](https://blog.naver.com/wisdom0719/221260269943)
