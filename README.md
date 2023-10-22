@@ -1678,3 +1678,33 @@ rougify style base16.monokai.dark > assets/css/syntax.css
 2. [rouge theme preview page](https://spsarolkar.github.io/rouge-theme-preview/)
 3. [liquid raw (특정 영역을 liquid escaping)](https://shopify.github.io/liquid/tags/template/#raw)
 4. [redner_with_liquid: false (file 전체를 liquid escaping)](https://talk.jekyllrb.com/t/any-way-to-exclude-files-directories-from-liquid-processing/6282)
+
+
+---
+---
+
+
+# 231006
+
+## 목차
+
+- Github 페이지 수동 Rebuild
+
+## Github 페이지 수동 Rebuild
+
+
+
+## 학습메모
+
+1. [Repository의 Github Page 반영 상태 알아보기](https://goodgid.github.io/Github-Blog-Status-Check/)
+
+
+---
+---
+
+
+# ${날짜}
+
+## 목차
+
+## 학습메모
