@@ -217,22 +217,49 @@ H가 skinny 한 matrix (그러니까 수신 측 안테나가 다중화된 유저
 
 #### LTE Reference Signals for MIMO
 
-#### Single User DL - 8 Tx antennas and 2 Rx antennas (1/2)
+<img width="657" alt="스크린샷 2023-10-28 오후 4 58 12" src="https://user-images.githubusercontent.com/138586629/278799540-1307900d-4355-47a4-a8b4-8de4807090b7.png">
+
+안테나끼리 각각의 리소스를 공유하지 않고 안겹치게함 ㅇㅇ
+
+#### Single User DL - 8 Tx antennas and 2 Rx antennas (1/2, 2/2)
+
+spatial multiplexing이라고 생각을 하고 H가 주어지면 SVD를 이용해서 뭐시기 저시기.
 
 <img width="958" alt="스크린샷 2023-10-28 오후 3 03 46" src="https://user-images.githubusercontent.com/138586629/278794502-46107254-8ba8-4dd4-a92e-c8fc16dba4f2.png">
 
-7a5d1-7343-4209-b487-302622c7f1ba.png">
+LTE는 8\*8 matrix의 v1~v8 중에서 맘에 드는거 2개 골라. 하면 3, 5 이렇게
+고른다고 치면 그걸 통해서 x1v3 + x2v5가 보내지는거임.
+
 <img width="940" alt="스크린샷 2023-10-28 오후 3 03 53" src="https://user-images.githubusercontent.com/138586629/278794508-2c6c0cd0-0783-46a8-860d-d43514b7bf1f.png">
 
 #### Multi-User DL - 8 Tx antennas and 2 Rx antennas
+
+멀티 유저면 유저 x는 v3, v5고르고, 유저 y는 v2, v7 골라가지고
+x1v3 + x2v5 + y1v2 + y2v7이 보내지는거고.
+
+u1 & u2를 가지고 유저 x는 x1햇 x2햇을 얻고,
+유저 y는 y1햇 y2햇을 얻습니다.
 
 <img width="935" alt="스크린샷 2023-10-28 오후 3 04 39" src="https://user-images.githubusercontent.com/138586629/278794555-21043191-4f07-4be0-88f8-5d438c644b6d.png">
 
 #### LTE Downlink Transmission Structure
 
+DAC, ADC를 안테나별로 따로 있어야 된다는게 단점이라면 단점이래.
+
 <img width="955" alt="스크린샷 2023-10-28 오후 3 05 02" src="https://user-images.githubusercontent.com/138586629/278794569-25ff8e95-fb3d-43d8-ad72-94bbf845c672.png">
 
 #### LTE MIMO Modes
+
+matrix를 이용하는 LTE의 MIMO 모드.. 우리가 알 수 있는
+
+1. SISO : MIMO 안하겠다
+2. Transmit Diversity : STBC
+3. MU-MIMO
+4. 1 유저에게 2 layer를 사용하느냐
+5. 1 유저에게 2 이상 8 layer까지를 사용하느냐
+
+결론 : 결국 LTE에서는 digital beamforming(spatial multiplexing)을 이용한
+MU-MIMO를 많이 사용합니다 그쵸
 
 <img width="856" alt="스크린샷 2023-10-28 오후 3 06 09" src="https://user-images.githubusercontent.com/138586629/278794608-e5c99ab1-6171-492a-85c9-0bd6dbc32a93.png">
 
@@ -242,6 +269,17 @@ H가 skinny 한 matrix (그러니까 수신 측 안테나가 다중화된 유저
 - Digital & Analog Beamforming
 
 #### Massive MIMO for 5G NR
+
+결국 LTE에서는 `4*2 MIMO`라는 얘기를 많이 써요.
+기지국 안테나가 4개, 단말 안테나가 2개다 이말임.
+
+이에 대비하여 5GNR에서는 `16*16 MIMO`라는 말을 많이 써요.
+horizontal 기지국 안테나 16개,
+vertical 기지국 안테나 16개,
+`massive MIMO`.
+
+기존에는 massive MIMO = analog beamforming을 많이 얘기했었는데
+요즘엔 좀 달라졌다네 이따 설명함.
 
 - “Large” number of Base Station antennas M
   - K users with typically one antenna per user
@@ -256,21 +294,47 @@ H가 skinny 한 matrix (그러니까 수신 측 안테나가 다중화된 유저
 
 #### Digital Beamforming
 
+Digital Beamforming을 해주는 것은 massive MIMO에 적절치 않습니다.
+
+왜냐하면 16, 16 안테나 모두에 다 각각의 DAC ADC를 달아줘야 하거든요.
+
+근데 쓰긴쓰는데 언제쓰는진 이따 보여드림
+
 <img width="491" alt="스크린샷 2023-10-28 오후 3 17 32" src="https://user-images.githubusercontent.com/138586629/278795003-1b4a9829-bf3c-4b25-bcb6-61d335a1bfa1.png">
 
 #### Analog Beamforming
+
+그래서 Analog Beamforming이 적합합니다.
+
+하나의 PAAM은 하나로만 갈 수 있습니다. 하여튼 한 방향으로 신호를 세게 하는데 쓰이는거니까
+거기에 쓰이는 안테나들은 유저 하나를 위해서만 할 수 있는거다 알겠죠?
 
 <img width="577" alt="스크린샷 2023-10-28 오후 3 18 04" src="https://user-images.githubusercontent.com/138586629/278795019-4ce84311-6320-488d-b3f2-50d336a6856a.png">
 
 #### Massive MIMO Beamforming Architectures
 
+자 아까 말했듯 아날로그 빔포밍은 여러 안테나를 하나의 RF chain에다 달아서 한 유저에게 세게 해주는거.
+
+massive MIMO, 5G NR에서는 최대 256개 정도의 안테나가 있는데
+Digital beamforming으로 모든 안테나에 각각의 RF chain을 만들어주는 건 현실적으로 불가능함.
+
+하여간 analog beamforming이 더 적합한데 결국 NLOS(none line of sight)에서 잘 동작안하니
+결국 두 장점과 현실적인 것을 최대한 고려해서 `Hybrid beamforming`을 해줌.
+
+digital beamforming을 그렇게 여러개로 사용하지는 않는대 하여튼
+
 <img width="838" alt="스크린샷 2023-10-28 오후 3 18 27" src="https://user-images.githubusercontent.com/138586629/278795042-9279f1cb-14c8-48b6-a33d-e232a553db1c.png">
 
 #### Practical aspects of 5G NR in Low-Band (<1GHz)
 
+뭐 하여튼 2T/2R, 4T/4R 정도의 안테나를 사용한대 ㅇㅇ
+
 <img width="620" alt="스크린샷 2023-10-28 오후 3 18 52" src="https://user-images.githubusercontent.com/138586629/278795065-b9029ce0-8ae1-429e-b03a-01922c154934.png">
 
 #### 5G NR in Mid-Band (e.g. 3.5 GHz)
+
+미드밴드에서는 digital beamforming을 좀 사용한다..
+여기서는 하여튼 주로 digital beamforming
 
 - Digital beamforming allows multiple beam directions at the same time
   from the same Array Antenna Module
@@ -279,14 +343,21 @@ H가 skinny 한 matrix (그러니까 수신 측 안테나가 다중화된 유저
 
 #### 5G NR in High-Band (e.g. 28 GHz)
 
+여기서는 기본적으로 analog beamforming을 사용하고,
+digital도 결합해서 hybrid 형태로 많이 사용한다. ㅇㅋ?
+
 - Due to high numbers of Tx/Rx ports, analog beamforming is used, most
   commonly in the form of hybrid beamforming.
 
 #### MIMO Operation – High Band
 
+팬넬이라고 하는데, 팬넬을 나눠서 multiplexing을 한다나 뭐라나
+
 <img width="764" alt="스크린샷 2023-10-28 오후 3 20 16" src="https://user-images.githubusercontent.com/138586629/278795131-4edfc387-29e0-4004-a717-29601cf1ca8d.png">
 
 #### SSB Beam Sweeping and P1 Beam Management
+
+뭐 이거는 방향을 어떻게 할거냐? 뭐 그런 얘기래.
 
 #### Synchronization and System Information (3/3)
 
@@ -343,6 +414,26 @@ Zero-Forcing Precoding과 Zero-Forcing Equalizer는 다중 안테나 시스템�
 
 Zero-Forcing Precoding과 Zero-Forcing Equalizer는 다중 안테나 시스템에서의 데이터 전송 품질을 향상시키는 데 사용됩니다. 이들은 다중 경로 간섭을 줄이고 다중 안테나에서의 신호를 효율적으로 처리하여 무선 통신 시스템의 성능을 향상시킵니다.
 
+---
+
+ㄴㄴ
+
+두 개념은 결국 무선 통신에서 MIMO(다중 송수신 안테나)를 활용해서 같은 시간, 같은 주파수에
+여러 개의 채널로 신호를 전송할 수 있게 해주는 기술인데, Pseudo-Inverse를 활용함.
+
+Pseudo-Inverse는 자연적으로 생성되는 H 매트릭스의 허미션을 구한다면
+
+- H에 `H^H*(H*H^H)^(-1)`을 뒤에다가 곱해도 I -> Precoding (ZFP)
+- H에 `(H^H*H)^(-1)*H^H`을 앞에다가 곱해도 I -> Equalizer (ZFE)
+
+인 그런 특징을 활용해서
+
+- (DownLink에서) 송신측에서 전자를 곱해서 전송하는 걸 Zero-Forcing Precoding,
+- (UpLink에서) 수신측에서 수신 후 후자를 곱해서 활용하는 걸 Zero-Forcing Equalizer라 함.
+
+모두 MU-MIMO(Multi User MIMO)를 가능하게 하는 기술이다.
+결국 DL에서 송신측도 기지국 (수신측은 유저), UL에서 수신측도 기지국 (송신측은 유저) 임.
+
 ### What is multi-user (MU) MIMO ?
 
 > 다중 사용자 MIMO (MU-MIMO)란 무엇입니까?
@@ -358,6 +449,15 @@ Zero-Forcing Precoding과 Zero-Forcing Equalizer는 다중 안테나 시스템�
 4. **빔포밍**: MU-MIMO는 빔포밍 기술을 사용하여 각 사용자로 데이터를 정확하게 방향성을 조절하여 전송합니다. 이를 통해 데이터를 효과적으로 전달하고 다중 경로 환경에서의 간섭을 줄일 수 있습니다.
 
 MU-MIMO는 주로 Wi-Fi 라우터, LTE, 5G, WiMAX 및 다른 무선 통신 시스템에서 사용됩니다. 이 기술은 다중 사용자 환경에서 데이터 전송 효율성을 향상시키며, 사용자 간의 데이터 전송 속도와 신호 품질을 향상시킵니다. MU-MIMO는 무선 네트워크의 성능을 높이고 다수의 동시 접속을 지원하는 데 기여합니다.
+
+---
+
+ㅇㅇ
+
+Multi-User MIMO(Multiple Input, Multiple Output)은 여러 송수신 안테나를 활용해서
+무선 통신으로 여러 사용자에게 동시에 데이터를 전송하는 기술임.
+
+spatial multiplexing으로 할 수도 있고, beamforming으로 할 수도 있음. 자세한 건 아래에서 설명.
 
 ### How can analog beamforming be used for multi-user?
 
@@ -377,6 +477,16 @@ MU-MIMO는 주로 Wi-Fi 라우터, LTE, 5G, WiMAX 및 다른 무선 통신 시�
 
 다중 사용자에게 아날로그 빔포밍을 사용하면 여러 사용자 간의 간섭을 최소화하고 데이터 전송 품질을 향상시킬 수 있습니다. 이는 무선 통신 시스템에서 고밀도 다중 사용자 환경에서 유용하며, 5G와 같은 다음 세대 무선 통신 시스템에서도 중요한 역할을 합니다.
 
+---
+
+ㄴㄴ
+
+analog beamforming 같은 경우는 하나의 RF chain에 phase만 다른 여러 송신 안테나를 달아서
+특정 방향으로의 신호를 세게 해주는 방식임.
+
+그래서 다른 방향으로의 신호에는 영향을 크게 안 줄 수 있음. 레이저처럼.
+그래서 그런 set of antennas를 여러 세트를 각각의 유저 방향으로 쏴주는 것으로 multiplexing이 가능함.
+
 ### Why is the spatial multiplexing considered a beamforming?
 
 > 공간 다중화(spatial multiplexing)을 beamforming으로 간주하는 이유는 무엇입니까?
@@ -393,6 +503,18 @@ MU-MIMO는 주로 Wi-Fi 라우터, LTE, 5G, WiMAX 및 다른 무선 통신 시�
 
 그러나 빔포밍과 공간 다중화는 목표와 작동 방식에서 다르며, 주요한 차이가 있습니다. 빔포밍은 주로 신호의 방향성을 제어하고 간섭을 줄이는 데 사용되며, 공간 다중화는 다수의 데이터 스트림을 동시에 전송하는 데 사용됩니다. 종종 이러한 두 개념이 함께 사용되거나 혼동되기도 하지만, 각각의 목표와 적용 시나리오를 이해하는 것이 중요합니다.
 
+---
+
+ㄴㄴ
+
+공간 다중화는 같은 주파수, 같은 시간에서도 SVD나 Pseudo-Inverse 등의 수학적인 기반으로
+여러 채널을 사용할 수 있게 하는 방식인데,
+
+이에 따라 multi-user일 때 결국 한 사용자에게 에너지를 몰아주는 역할을 할 테니
+(여러 개의 송신 안테나, 소수의 수신 안테나라고 할 때 여러 안테나가 적은 안테나에 신호를 몰아주는 거)
+
+beamforming의 효과를 볼 수 있음. 그래서 sptial multiplexing을 digital beamforming이라고 함.
+
 ### What is the main difficulty (drawback) of digital beamforming compared to analog beamforming in massive (>64) MIMO ?
 
 > 대규모 MIMO (Massive MIMO, >64)에서 아날로그 빔포밍(analog beamforming)에 비해 디지털 빔포밍(digital beamforming)의 가장 큰 어려움(단점)은 무엇입니까?
@@ -408,3 +530,10 @@ MU-MIMO는 주로 Wi-Fi 라우터, LTE, 5G, WiMAX 및 다른 무선 통신 시�
 4. **무선 통신 향상**: 이 두 기술은 모두 무선 통신 시스템의 성능을 향상시키는 데 중요하며, 다중 안테나를 효과적으로 활용하여 데이터 전송 품질을 개선합니다.
 
 그러나 빔포밍과 공간 다중화는 목표와 작동 방식에서 다르며, 주요한 차이가 있습니다. 빔포밍은 주로 신호의 방향성을 제어하고 간섭을 줄이는 데 사용되며, 공간 다중화는 다수의 데이터 스트림을 동시에 전송하는 데 사용됩니다. 종종 이러한 두 개념이 함께 사용되거나 혼동되기도 하지만, 각각의 목표와 적용 시나리오를 이해하는 것이 중요합니다.
+
+---
+
+ㄴㄴ 다시 설명하면 결국 Digital Beamforming은 각 안테나별로 독자적인 RF Chain을 만들어줘야 하는데, massive MIMO는 안테나 수가 너무 많아서 현실적으로 모든 안테나에 각각 RF Chain을 만들기가 어려워서
+
+그래서 Analog Beamforming을 주로 사용하되, Digital Beamforming을 적절히 섞어서
+Hybrid Beamforming의 형태로 많이 사용한다.
