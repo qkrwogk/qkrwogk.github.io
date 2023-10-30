@@ -69,6 +69,8 @@ MIMO (Multi-Input Multi-Output) (1/2)
 - Multipath may or may not increase the received signal power
   - 다중 경로(Multipath)는 수신 신호 전력을 증가시킬 수도 있고 증가시키지 않을 수도 있다.
 
+뭐 하여튼 free space가 아니면 다중 경로로 도달한 신호간의 간섭 때문에 신호다 더 세지기도 약해지기도 한다.
+
 #### The Propagation Channel is still a Linear System – a complex number
 
 #### Estimating the Channel State
@@ -78,13 +80,24 @@ MIMO (Multi-Input Multi-Output) (1/2)
 - CSI-RS and SRS are for this purpose
   - CSI-RS와 SRS는 이를 위한 것이다.
 
+<img width="656" alt="스크린샷 2023-10-30 오후 8 52 00" src="https://user-images.githubusercontent.com/138586629/279046101-510b6bb9-cce8-4626-b9ef-8b710917a850.png">
+
+채널의 상태를 예측하려면 하여튼 CSI-RS와 SRS을 통해서 h의 상태를 알아야 함.
+하여튼 그걸로 H 매트릭스를 알 수 있음(?)
+
 #### Multiple Propagation Channels (다중 전파 채널)
 
 <img width="866" alt="스크린샷 2023-10-22 오후 6 25 53" src="https://user-images.githubusercontent.com/138586629/277156167-c35b3114-03c7-41fd-8140-66f144d34915.png">
 
+멀티 안테나를 활용해서 H 매트릭스를 더 크게 만들자나? 그럼 여러 h 정보를 알 수 있지
+
 #### General Channel Matrix (일반 채널 매트릭스)
 
 <img width="952" alt="스크린샷 2023-10-22 오후 6 27 10" src="https://user-images.githubusercontent.com/138586629/277156220-53fc05f3-d096-4cb5-af8a-dd5980ffd61d.png">
+
+<img width="538" alt="스크린샷 2023-10-30 오후 8 58 35" src="https://user-images.githubusercontent.com/138586629/279047596-142c0e26-c06f-4d55-9c10-036d9962ee9d.png">
+
+뭐 이걸가지고 H의 inverse matrix를 구해서 estimate 할 수 있겠죠?
 
 #### Shannon Capacity
 
@@ -93,6 +106,12 @@ MIMO (Multi-Input Multi-Output) (1/2)
 
 <img width="982" alt="스크린샷 2023-10-22 오후 6 30 10" src="https://user-images.githubusercontent.com/138586629/277156336-cab6beb0-3740-42e1-8f10-fa72d8ad2f04.png">
 
+하여튼 이걸로 SISO일 때 C/B에 대한 값을 알 수 있죠?
+
+그니까 C/B를 spectral efficiency라고 하는데, Bandwidth 대비
+
+S/N은 신호 대 노이즈 비(ratio)고요, 여기서 N은 noise를 의미합니다잉.
+
 #### General MIMO Capacity
 
 <img width="957" alt="스크린샷 2023-10-22 오후 6 31 14" src="https://user-images.githubusercontent.com/138586629/277156391-0629c523-6180-4d69-a7dd-c3060325991c.png">
@@ -100,9 +119,21 @@ MIMO (Multi-Input Multi-Output) (1/2)
 - Note that we will compare SISO and MIMO capacity with the same transmit power.
   - 앞으로 같은 전송 전력에서 SISO와 MIMO 용량을 비교할것임.
 
+위의 shannon capacity를 통해서 MIMO일 때 확장을 해봣죠
+
+여기서 N은 위에 있는 noise가 아니라 송신 안테나 개수 N임요 ㅇㅇ
+
 #### Parallel Non-coupled Channels
 
 <img width="954" alt="스크린샷 2023-10-22 오후 6 33 47" src="https://user-images.githubusercontent.com/138586629/277156511-efb80869-3f1d-4f38-9a58-642f1f92b12b.png">
+
+이제 SISO인 게 여러개라는, 그러니까 서로간에 간섭이 아예 없는 ideal한 상황을 가정했을 때
+요렇게 식을 구해보면 S/N = rho (signal-to-noise ration)가 N이 무한일 때 14.4에 수렴.
+하여튼 MIMO가 SISO보다 더 좋다는 것!
+
+다시 얘기하면 송신 N개 수신 N개고 송수신 1개씩 짝을 지어서 다른 짝에게 간섭하지 않고 데이터를 송수신한다는 가정하에 전체 Capacity를 계산해보니까, 송수신 1개만 전송할 때(SISO)에 비교할 때 요런 Capacity의 증가 추세를 보이더라.
+
+rho가 10이라고 가정할 때 14.4에 수렴하더라.
 
 #### Before discussing three MIMO modes - Polarization of Electromagnetic Wave
 
@@ -110,6 +141,8 @@ MIMO (Multi-Input Multi-Output) (1/2)
 - Antennas are sensitive to polarization, and generally only receive or transmit **a signal with a particular polarization**
 
 <img width="410" alt="스크린샷 2023-10-22 오후 6 35 46" src="https://user-images.githubusercontent.com/138586629/277156590-e1e5d5ec-007d-43ee-a48a-d87db78ed2eb.png">
+
+안테나가 송신 신호와 수직 방향이면 신호가 수신되지 않을 수 있음.
 
 #### Antenna Polarization(안테나 양극화)
 
@@ -122,6 +155,10 @@ MIMO (Multi-Input Multi-Output) (1/2)
   - Combined before ADC – baseband signal processing does not take this into account.
     - ADC 이전에 결합 - 기저대역 신호 처리에서는 이를 고려하지 않음.
 
+그래서 수직하게 안테나 두개를 배치해서 이러한 현상을 방지하는 것.
+
+avoid no effective electric field(전기장) at the receiver!
+
 ## MIMO Mode
 
 ### 1. Diversity
@@ -133,6 +170,8 @@ MIMO (Multi-Input Multi-Output) (1/2)
 - 공간 (안테나) 다양성 - 스펙트럼 효율성 손실 없이 달성됨
   - 수신 다양성 (다중 수신 안테나)
   - 전송 다양성 (다중 전송 안테나)
+
+<img width="671" alt="스크린샷 2023-10-30 오후 9 31 43" src="https://user-images.githubusercontent.com/138586629/279056276-45368d9a-cba8-4f6f-9f00-95a2a23de574.png">
 
 #### Receive Diversity
 
@@ -149,9 +188,20 @@ MIMO (Multi-Input Multi-Output) (1/2)
   - Optimally combining – MRC
     - 최적의 결합 - MRC
 
+<img width="652" alt="스크린샷 2023-10-30 오후 9 32 10" src="https://user-images.githubusercontent.com/138586629/279056394-321c0ce3-b884-430c-8279-c9c115d0cc72.png">
+
+- h1, h2, ... 이 서로 독립적이려면 충분히 공간적으로 떨어져 있어야 해요
+- 이게 파장 길이인데 3GHz이 carrier frequncy니, 10^9 = 10cm. 단말에선 어렵겠죠?
+
 #### Maximal Ratio Combining (MRC) for Receive Diversity
 
 <img width="1002" alt="스크린샷 2023-10-22 오후 6 49 15" src="https://user-images.githubusercontent.com/138586629/277157172-c5f077ae-73cb-4d83-93e6-43a777ddec5d.png">
+
+- 뭐시기저시기 y1, y2를 가지고서 x를 알아내는 것을 combine이라고 할 수 있는건데요
+- maximum likelihood detector라는 것은 h1, h2을 가중치로 해서 구하는거임요.
+- 그 정확한 가중치 값은 channel estimator에서 구하는거임요.
+
+Receiver Diversity는 중요한 게 transmitter가 그걸 알 필요가 없다 이말씀.
 
 #### Transmit Diversity (전송 다양성)
 
@@ -172,14 +222,33 @@ MIMO (Multi-Input Multi-Output) (1/2)
   - Should be a simple modification – no difficulty at the combining
     - 간단한 수정이여야 함 - 결합에 어려움이 없을 것
 
+<img width="253" alt="스크린샷 2023-10-30 오후 9 32 37" src="https://user-images.githubusercontent.com/138586629/279056503-554767ab-d08b-4d4b-a6f3-5976e774fc0f.png">
+
+역시 이것도 receiver가 알 필요가 없음.
+
 #### Transmit Diversity in Space-Time Block Code
 
 - 2개의 안테나, 2개의 time instance
 - STBC, a.k.a Alamouti Code
 
+<img width="685" alt="스크린샷 2023-10-30 오후 9 46 24" src="https://user-images.githubusercontent.com/138586629/279060178-7da79989-daf5-4e77-8e59-3bbfd77197e9.png">
+
+알라무티라는 사람이 만든 STBC라는 것은 2개의 안테나, 2개의 time instance.
+
+두개의 심볼을 보내는데 처음엔 s1, s2, 두번째는 -s2, s1을 보내 왜그러냐면
+
+<img width="533" alt="스크린샷 2023-10-30 오후 9 48 01" src="https://user-images.githubusercontent.com/138586629/279060588-570a09a9-7df6-44af-b12e-533fe0e06de1.png">
+
+time diversity를 이용함!
+
+이러저러하게 계산을 하면요 s1, s2를 저 연립방정식으로 계산을 할 수 있다나요?
+
 #### Decoding of Alamouti Code
 
 <img width="844" alt="스크린샷 2023-10-22 오후 7 01 34" src="https://user-images.githubusercontent.com/138586629/277157677-8dc0fc03-6e8c-4772-b335-4efec3987f71.png">
+
+계산 결과는 여기에 있죠? 하여튼 간단하면서 실제로도 많이 사용됩니다.
+이렇게 수신측에서 s1, s2 계산해냄.
 
 ### 2. Beamforming
 
@@ -190,9 +259,25 @@ MIMO (Multi-Input Multi-Output) (1/2)
 - Spatial multiplexing is also possible to increase system capacity
   - 시스템 용량 증가를 위한 공간 다중화도 가능.
 
+<img width="643" alt="스크린샷 2023-10-30 오후 9 59 27" src="https://user-images.githubusercontent.com/138586629/279063483-e1096f27-299a-4a94-b935-a483cb7adca2.png">
+
+horn antenna라는 건데 이렇게 특정 방향으로 레이저빔처럼 더 집중시킬 수 있습니다.
+
+기지국과 기지국간의 통신에는 (우리나라는 광케이블로 하지만) 섬나라 같은 경우는 저런걸로 함.
+
+Fixed Service => Wrieless Comm. 이지만 tx&rx 움직이지 않는 상황 (ex 기지국 간의 통신)
+
 #### Analog Beamforming – theory
 
 <img width="787" alt="스크린샷 2023-10-22 오후 7 05 03" src="https://user-images.githubusercontent.com/138586629/277157820-b1c394b2-b51d-462d-8579-c8ca45ecfe97.png">
+
+그래서 빔포밍은 어떻게 하나? 오늘 말씀드릴 빔포밍은 analog beamforming인데요
+
+microwave는 sine wave로 전달이 되잖아요? 거리를 잘 맞춰서
+
+<img width="530" alt="스크린샷 2023-10-30 오후 10 05 57" src="https://user-images.githubusercontent.com/138586629/279065064-9af53eb6-44bc-48ba-b62f-63aa46c8604b.png">
+
+<img width="487" alt="스크린샷 2023-10-30 오후 10 06 21" src="https://user-images.githubusercontent.com/138586629/279065144-665fe807-2181-4f52-a663-eed0aef8ed85.png">
 
 #### Transmit vs. Receive Beamforming
 
@@ -221,6 +306,9 @@ MIMO (Multi-Input Multi-Output) (1/2)
 <img width="648" alt="스크린샷 2023-10-22 오후 7 19 47" src="https://user-images.githubusercontent.com/138586629/277158497-b4a25846-8c77-4adf-83ae-5242814430e0.png">
 
 ## Questions
+
+keywords : MIMO modes(diversity, beamforming, spatial multiplexing),
+receiver diversity, transmit diversity(STBC), SISO channel capacity(shannon capacity), parallel non-coupled channel, antenna polarization.
 
 - Explain 3 modes of MIMO operations
   - MIMO 동작의 3가지 모드에 대해 설명하시오.
@@ -261,6 +349,30 @@ SU-MIMO는 단일 사용자와의 통신을 향상시키며,
 MU-MIMO는 다중 사용자 환경에서 대역폭을 효율적으로 활용합니다.
 Massive MIMO는 대규모 안테나 어레이를 사용하여 범위와 성능을 향상시킵니다.
 
+---
+
+ㄴㄴ 이거 아니고요.
+
+- MIMO modes
+  - Diversity
+  - Beamforming
+  - Spatial Multiplex
+
+이렇게 3개 말하는 겁니다. ㅇㅇ
+
+- Diversity는 그냥 여러개의 안테나로
+  - receiver : transmitter 알 필요 없다
+    - selective combining
+    - optimally combining (MRC, maximal ratio combining)
+  - transmitter
+- Beamforming
+  - 똑같은 신호를 똑같은 주파수로 쏴주기는 하되, 위상과 안테나간 거리를 잘 조정해서 특정 방향으로의 에너지를 세게 몰아주는 방식이다. 레이저빔 같은거.
+- Spatial Multiplexing
+  - 위에 설명했던 Multiple Antenna(Parallel Non-coupled Channel) 상황에서
+    - receive antenna 개수가 transmit antenna 개수보다 많은 상황에서 서로간의 간섭도 있을 때, 전처리/후처리를 적절히 해서 이 알 수 없는 H를 해결하는 방법!
+    - 그러니까 1채널은 1채널로, 2채널은 2채널로만 신호가 가게 한번 해보자!
+    - 주파수를 더 사는 것과 같은 효과가 되어버리죠 채널이 여러개가 되어버리니!
+
 ### Explain receiver diversity and STBC
 
 > 수신기의 다양성 및 STBC에 대해 설명하시오.
@@ -280,6 +392,38 @@ Massive MIMO는 대규모 안테나 어레이를 사용하여 범위와 성능�
 수신기의 다양성과 STBC는 무선 통신 시스템에서 신호의 안정성을 향상시키고 다중 경로 환경에서의 성능을 개선하는 데 사용됩니다.
 수신기의 다양성은 주로 신호의 안정성을 향상시키며,
 STBC는 다중 안테나 시스템에서 데이터 전송 효율성을 향상시킵니다.
+
+---
+
+한 바구니에 모든 계란을 담지 말아라. 채널 자체가 불안정하니 한 채널로만 보내면 안좋은 상태가 존재.
+
+그걸 극복하기 위한 가장 효과적인 방법이 diversity(다양성)임.
+
+- time diversity : 하나의 심볼을 여러 시간에 걸쳐 보내는 거
+- frequency diversity : 하나의 심볼을 여러 주파수에 걸쳐 보내는 거
+
+각 시간, 주파수에 따라서 통신 상태가 좋을 때 안좋을 때가 있으니 여러번 보내는거 ㅇㅇ
+당연히 비효율적임 ㅇㅇ
+
+그래서 spatial(antenna) diversity도 등장. 공간적으로 분리된 여러 안테나들에 같은 신호를
+보내서 without loss of spectral efficiency(효율성을 떨어뜨리지 않는 선에서) 전송 품질을 보장!?
+
+##### receiver diversity
+
+수신 안테나가 여러개인거임. transmitter랑 노상관이고요 ㅇㅇ
+
+- selective combining
+  - 여러 수신 안테나에 온 신호 중 가장 receive power가 센거를 그냥 고르는거임 ㅇㅇ
+- optimally combining - MRC, Maximal Ratio Combining
+  - 이거는 뭐냐하면 각각의 수신안테나의 gain(h1, h2, ...)을 가중치로 해서 각각의 estimator에서 나온 결과를 계산한 결과를 가지고 실제 original 정보를 예측하는 것
+
+##### transmit diversity
+
+- receiver가 transmit을 모른다면 걍 multipath처럼 생각하는 건데.. 걍 good luck
+- 근데 이렇게 운빨에 맡기는 건 별로겠죠? STBC를 이용해서 좀더 transmit diversity 성능을 높이는 방법을 연구함요.
+
+- spatial diversity(2개의 안테나로) + time diversity(2 차례 전송)로 효율 저하 없이
+  - h1, h2 채널 하나가 망가지더라도 뭐 하여튼 값을 구할 수 있는거죠.
 
 ### What is the SISO channel capacity and what does that mean?
 
@@ -309,6 +453,17 @@ SISO 채널 용량은 Shannon-Hartley 정리를 기반으로 계산됩니다. �
 
 SISO 채널 용량은 채널 대역폭과 SNR에 의해 결정되므로, 채널 환경에 따라 다양한 값을 가질 수 있습니다. 높은 대역폭과 높은 SNR 환경에서는 더 높은 채널 용량을 달성할 수 있으며, 무선 통신 시스템의 성능과 효율성을 나타내는 중요한 지표 중 하나입니다.
 
+---
+
+SISO 채널 용량은 Shannon Capacity라고도 하며,
+
+- C = B log (1 + S/N)
+  - 이게 무슨얘기냐면 SISO communication channel에서, `maximum data rate (C)`가
+    B(bandwidth)와 log_2(1+S/N)의 곱으로 나타낼 수 있다.
+    - S/N은 signal to noise ration.
+  - C/B = log_2 (1 + S/N)으로 표현하기도 함.
+    - C/B는 `spectral efficiancy(bits/sec/Hz)`라고 함 `단위 대역폭당 maximum data rate`
+
 ### What is the parallel non-coupled channel and what is its capacity? What does that mean?
 
 > 병렬 비결합 채널이란 무엇이며 용량은 어떻게 되는가? 어떤 의미를 가지는가?
@@ -336,6 +491,16 @@ SISO 채널 용량은 채널 대역폭과 SNR에 의해 결정되므로, 채널 
 
 병렬 비결합 채널은 다양한 통신 시나리오에서 사용될 수 있으며, 각 채널이 독립적으로 동작하는 환경에서 통신 용량 및 신뢰성을 최적화하는 데 도움을 줍니다. 이러한 채널 구조는 정보 이론 및 통신 공학 분야에서 중요한 개념 중 하나이며, 다중 경로 및 다중 안테나 시스템에서도 유용하게 적용됩니다.
 
+---
+
+`parallel non-coupled channels`는요 서로간의 간섭 없이 N개의 송신 N개의 수신
+안테나에서 송수신 1개씩 쌍을 이뤄서 송수신이 가능하다는 ideal한 가정하에 `spectral efficiency`를 계산해봐요.
+
+그러면 아까 말했던 SISO의 channel capacity인 `shannon capacity`의 `* N`만 해주면됨.
+
+계산을 해보니 같은 power에서 안테나를 많이 쓰는 게 좋기는 하지만 너무너무 좋지는 않더라.
+N이 무한으로 수렴해도 x log (1 + 10/x) => 14.4 정도!
+
 ### Explain antenna polarization
 
 > 안테나 양극화에 대해 설명하시오.
@@ -352,6 +517,13 @@ SISO 채널 용량은 채널 대역폭과 SNR에 의해 결정되므로, 채널 
    - **예시**: GPS 안테나 및 위성 통신에 사용될 수 있으며, GPS 수신기는 원형 양극화를 활용하여 위성 신호를 안정적으로 수신합니다.
 
 안테나 양극화는 통신 환경 및 필요한 안테나 특성에 따라 선택됩니다. 선형 양극화는 일반적으로 특정 방향의 통신에 사용되며, 원형 양극화는 다양한 방향에서의 안정성을 개선하고 다중 경로에서의 신호를 향상시킵니다. 적절한 양극화를 선택하여 무선 통신 시스템의 성능을 최적화할 수 있습니다.
+
+---
+
+ㄴㄴ
+걍 송신 신호와 직교하는 방향으로 안테나를 배치하면 안테나가 받는 신호가 0이 되버리기 때문에,
+이러한 상황을 방지하기 위해서 수신 안테나를 90도 차이나게(+45, -45) 세트로 배치를 하는 것을
+안테나의 양극화라고 함.
 
 ### Explain (analog) beamforming operation – transmitter and receiver
 
@@ -376,3 +548,7 @@ SISO 채널 용량은 채널 대역폭과 SNR에 의해 결정되므로, 채널 
 3. **신호 합성**: 가중치가 적용된 수신된 신호는 안테나 배열을 통해 합성되어 원하는 방향으로의 신호를 추출합니다. 이는 특정 방향에서의 신호를 강화하고 다른 방향에서의 간섭을 감소시킵니다.
 
 송신기와 수신기에서의 빔포밍을 통해 특정 방향으로의 신호 집중 및 간섭 제어가 가능해집니다. 이 기술은 무선 통신 시스템에서 품질 및 성능을 향상시키며, 특히 대역폭 효율성을 개선하고 다중 경로 간섭을 줄이는 데 도움이 됩니다. 빔포밍은 5G와 같은 다음 세대 무선 통신 시스템에서 중요한 역할을 합니다.
+
+---
+
+똑같은 신호를 똑같은 주파수로 쏴주기는 하되, 위상과 안테나간 거리를 잘 조정해서 특정 방향으로의 에너지를 세게 몰아주는 방식이다. 레이저빔 같은거.
