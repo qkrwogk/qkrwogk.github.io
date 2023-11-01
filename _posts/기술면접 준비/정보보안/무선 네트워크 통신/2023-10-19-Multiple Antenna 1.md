@@ -103,6 +103,7 @@ MIMO (Multi-Input Multi-Output) (1/2)
 
 - Over path from one Tx antenna to one Rx antenna
   - Data rate limit over which error free communication is impossible.
+  - SISO 채널에서 오류 없이 전송 가능한 이론상의 최대 용량.
 
 <img width="982" alt="스크린샷 2023-10-22 오후 6 30 10" src="https://user-images.githubusercontent.com/138586629/277156336-cab6beb0-3740-42e1-8f10-fa72d8ad2f04.png">
 
@@ -111,6 +112,8 @@ MIMO (Multi-Input Multi-Output) (1/2)
 그니까 C/B를 spectral efficiency라고 하는데, Bandwidth 대비
 
 S/N은 신호 대 노이즈 비(ratio)고요, 여기서 N은 noise를 의미합니다잉.
+
+<img width="489" alt="스크린샷 2023-11-01 오후 4 17 11" src="https://user-images.githubusercontent.com/138586629/279603192-63e9a29e-fdfc-4d33-98be-4446e38bc50c.png">
 
 #### General MIMO Capacity
 

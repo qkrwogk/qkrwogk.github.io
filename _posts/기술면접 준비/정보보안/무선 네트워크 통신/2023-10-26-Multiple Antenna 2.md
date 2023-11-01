@@ -457,7 +457,8 @@ MU-MIMO는 주로 Wi-Fi 라우터, LTE, 5G, WiMAX 및 다른 무선 통신 시�
 Multi-User MIMO(Multiple Input, Multiple Output)은 여러 송수신 안테나를 활용해서
 무선 통신으로 여러 사용자에게 동시에 데이터를 전송하는 기술임.
 
-spatial multiplexing으로 할 수도 있고, beamforming으로 할 수도 있음. 자세한 건 아래에서 설명.
+spatial multiplexing(digital beamforming)으로 할 수도 있고,
+analog beamforming으로 할 수도 있음. 자세한 건 아래에서 설명.
 
 ### How can analog beamforming be used for multi-user?
 
